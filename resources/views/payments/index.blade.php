@@ -107,7 +107,7 @@
         {{-- Mobile Card View --}}
         <div class="block sm:hidden space-y-3">
             @forelse($payments as $payment)
-                <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+                <div x-on:click="$dispatch('open-modal', 'payment-details-{{ $payment->id }}')" class="bg-white cursor-pointer rounded-xl border border-gray-200 shadow-sm p-4">
                     <div class="flex items-start justify-between mb-3">
                         <div class="min-w-0 flex-1">
                             <h4 class="text-sm font-bold text-gray-900 truncate">{{ $payment->student_name }}</h4>
@@ -130,17 +130,17 @@
                             </p>
                         </div>
                         <div class="flex items-center gap-3 ml-2">
-                            <a href="{{ route('payments.edit', $payment->id) }}" class="text-blue-600 hover:text-blue-900 transition" title="Edit">
+                            <a href="{{ route('payments.edit', $payment->id) }}" x-on:click.stop class="text-blue-600 hover:text-blue-900 transition" title="Edit">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                             </a>
                             @if(auth()->user()->role === 'admin')
-                            <form action="{{ route('payments.destroy', $payment->id) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to archive this record?')">
+                                        <form action="{{ route('payments.destroy', $payment->id) }}" method="POST" class="inline" x-on:click.stop onsubmit="return confirm('Are you sure you want to archive this record?')">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="text-yellow-600 hover:text-yellow-900 transition" title="Archive">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" /></svg>
                                 </button>
                             </form>
-                            <form action="{{ route('payments.forceDelete', $payment->id) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to PERMANENTLY DELETE this record? This cannot be undone.')">
+                                        <form action="{{ route('payments.forceDelete', $payment->id) }}" method="POST" class="inline" x-on:click.stop onsubmit="return confirm('Are you sure you want to PERMANENTLY DELETE this record? This cannot be undone.')">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="text-red-600 hover:text-red-900 transition" title="Permanent Delete">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
@@ -178,7 +178,7 @@
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-100">
                         @forelse($payments as $payment)
-                            <tr class="hover:bg-gray-50 transition duration-150">
+                            <tr x-on:click="$dispatch('open-modal', 'payment-details-{{ $payment->id }}')" class="hover:bg-gray-50 cursor-pointer transition duration-150">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                     {{ $payment->student_name }}
                                 </td>
@@ -217,18 +217,18 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-center font-medium">
                                     <div class="flex items-center justify-center space-x-4">
-                                        <a href="{{ route('payments.edit', $payment->id) }}" class="text-blue-600 hover:text-blue-900 transition" title="Edit">
+                                        <a href="{{ route('payments.edit', $payment->id) }}" x-on:click.stop class="text-blue-600 hover:text-blue-900 transition" title="Edit">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                                         </a>
                                         @if(auth()->user()->role === 'admin')
-                                        <form action="{{ route('payments.destroy', $payment->id) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to archive this record?')">
+                            <form action="{{ route('payments.destroy', $payment->id) }}" method="POST" class="inline" x-on:click.stop onsubmit="return confirm('Are you sure you want to archive this record?')">
                                             @csrf @method('DELETE')
                                             <button type="submit" class="text-yellow-600 hover:text-yellow-900 transition flex items-center gap-1 font-semibold" title="Archive">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" /></svg>
                                             </button>
                                         </form>
                                         
-                                        <form action="{{ route('payments.forceDelete', $payment->id) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to PERMANENTLY DELETE this record? This cannot be undone.')">
+                            <form action="{{ route('payments.forceDelete', $payment->id) }}" method="POST" class="inline" x-on:click.stop onsubmit="return confirm('Are you sure you want to PERMANENTLY DELETE this record? This cannot be undone.')">
                                             @csrf @method('DELETE')
                                             <button type="submit" class="text-red-600 hover:text-red-900 transition flex items-center gap-1 font-semibold" title="Permanent Delete">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
@@ -253,6 +253,74 @@
                 </table>
             </div>
         </div>
+
+        @forelse($payments as $payment)
+            <x-modal :name="'payment-details-'.$payment->id" maxWidth="md">
+                <div class="bg-white">
+                    <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-900">Payment Details</h3>
+                            <p class="text-sm text-gray-500">Record #{{ $payment->id }}</p>
+                        </div>
+                        <button type="button" class="text-gray-400 hover:text-gray-600" x-on:click="$dispatch('close-modal', 'payment-details-{{ $payment->id }}')" title="Close">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+                    </div>
+
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                                <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">Student Name</p>
+                                <p class="mt-1 text-sm font-semibold text-gray-900">{{ $payment->student_name }}</p>
+                            </div>
+
+                            <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                                <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">Course</p>
+                                <p class="mt-1 text-sm font-semibold text-gray-900">{{ $payment->course }} - {{ $payment->year_level ?? '1st Year' }}</p>
+                            </div>
+
+                            <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                                <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">Amount</p>
+                                <p class="mt-1 text-sm font-semibold text-green-600">₱{{ number_format($payment->amount, 2) }}</p>
+                            </div>
+
+                            <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                                <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">Payment Date</p>
+                                <p class="mt-1 text-sm font-semibold text-gray-900">{{ \Carbon\Carbon::parse($payment->date)->format('F d, Y') }}</p>
+                            </div>
+
+                            <div class="p-4 bg-gray-50 rounded-xl border border-gray-100 md:col-span-2">
+                                <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">Description</p>
+                                <p class="mt-1 text-sm font-semibold text-gray-900">{{ $payment->description }}</p>
+                            </div>
+
+                            <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                                <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">Recorded By</p>
+                                <p class="mt-1 text-sm font-semibold text-gray-900">
+                                    @if($payment->recorded_by_name)
+                                        {{ $payment->recorded_by_name }} <span class="text-blue-500 font-bold">(File)</span>
+                                    @else
+                                        {{ $payment->recorder->name ?? 'Unknown' }}
+                                    @endif
+                                </p>
+                            </div>
+
+                            <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                                <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">Record Created</p>
+                                <p class="mt-1 text-sm font-semibold text-gray-900">{{ $payment->created_at ? $payment->created_at->format('F d, Y g:i A') : 'N/A' }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="px-6 py-4 border-t border-gray-100 bg-gray-50 flex justify-end">
+                        <button type="button" class="px-4 py-2 bg-blue-600 text-white text-sm font-bold rounded-lg hover:bg-blue-700 transition" x-on:click="$dispatch('close-modal', 'payment-details-{{ $payment->id }}')">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </x-modal>
+        @empty
+        @endforelse
 
         <div class="mt-4 sm:mt-6 flex flex-col sm:flex-row items-center justify-between bg-white p-3 sm:p-4 border border-gray-200 rounded-lg shadow-sm gap-3">
             <div class="text-xs sm:text-sm text-gray-700">

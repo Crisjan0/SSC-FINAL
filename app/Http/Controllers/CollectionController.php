@@ -11,6 +11,7 @@ class CollectionController extends Controller
     {
         $courseCollections = Payment::selectRaw('course, sum(amount) as total')
                                     ->groupBy('course')
+                                    ->orderBy('course', 'asc')
                                     ->get();
 
         return view('collections.index', compact('courseCollections'));
@@ -50,7 +51,8 @@ class CollectionController extends Controller
         // Filtered total (after year level filter)
         $filteredTotal = (clone $query)->sum('amount');
 
-        $payments = $query->latest()
+        $payments = $query->orderBy('student_name', 'asc')
+                          ->orderBy('created_at', 'desc')
                           ->paginate(10)
                           ->onEachSide(1)
                           ->withQueryString();

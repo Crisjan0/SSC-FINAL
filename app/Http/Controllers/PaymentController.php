@@ -31,7 +31,8 @@ class PaymentController extends Controller
 
         // 3. Finalize the query with sorting and pagination
         // Do NOT use Payment::paginate() here; use the $query variable!
-        $payments = $query->latest()
+        $payments = $query->orderBy('student_name', 'asc')
+                        ->orderBy('created_at', 'desc')
                         ->paginate(10)
                         ->onEachSide(1)
                         ->withQueryString(); // Keeps search term in pagination links
