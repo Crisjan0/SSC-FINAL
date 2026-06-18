@@ -19,8 +19,8 @@
         <!-- Scripts -->
          @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased" x-data="{ sidebarOpen: false }">
-    <div class="flex min-h-screen bg-gray-100">
+    <body class="font-sans antialiased overflow-hidden" x-data="{ sidebarOpen: false }">
+    <div class="flex h-screen overflow-hidden bg-gray-100">
         {{-- Mobile Sidebar Overlay --}}
         <div x-show="sidebarOpen" 
              x-transition:enter="transition-opacity ease-linear duration-300"
@@ -36,14 +36,14 @@
 
         {{-- Sidebar --}}
         <div :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
-             class="fixed inset-y-0 left-0 z-50 w-64 transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-auto lg:z-auto">
+             class="fixed inset-y-0 left-0 z-50 w-64 transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-auto lg:z-auto lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto lg:overscroll-contain">
             @include('layouts.sidebar')
         </div>
 
         <div class="flex-1 flex flex-col min-w-0">
             @include('layouts.navigation')
 
-            <main class="p-4 sm:p-6">
+            <main class="flex-1 min-h-0 overflow-y-auto p-4 sm:p-6">
                 {{ $slot }}
             </main>
         </div>
