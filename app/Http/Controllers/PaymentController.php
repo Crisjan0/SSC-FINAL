@@ -19,14 +19,15 @@ class PaymentController extends Controller
 
         // 2. Apply search filters IF a search term exists
         if ($request->filled('search')) {
-            $searchTerm = $request->search;
+            $searchTerms = preg_split('/\s+/', trim($request->search), -1, PREG_SPLIT_NO_EMPTY);
             
-            // Use a "Nested Where" to keep the search logic grouped
-            $query->where(function($q) use ($searchTerm) {
-                $q->where('student_name', 'like', "%{$searchTerm}%")
-                ->orWhere('course', 'like', "%{$searchTerm}%")
-                ->orWhere('year_level', 'like', "%{$searchTerm}%");
-            });
+            foreach ($searchTerms as $term) {
+                $query->where(function($q) use ($term) {
+                    $q->where('student_name', 'like', "%{$term}%")
+                    ->orWhere('course', 'like', "%{$term}%")
+                    ->orWhere('year_level', 'like', "%{$term}%");
+                });
+            }
         }
 
         // 3. Finalize the query with sorting and pagination
@@ -300,8 +301,11 @@ class PaymentController extends Controller
             ->groupBy('archive_batch_name');
 
         if ($request->filled('search')) {
-            $searchTerm = $request->search;
-            $query->where('archive_batch_name', 'like', "%{$searchTerm}%");
+            $searchTerms = preg_split('/\s+/', trim($request->search), -1, PREG_SPLIT_NO_EMPTY);
+
+            foreach ($searchTerms as $term) {
+                $query->where('archive_batch_name', 'like', "%{$term}%");
+            }
         }
 
         $batches = $query->orderBy('archived_date', 'desc')
@@ -326,13 +330,16 @@ class PaymentController extends Controller
         }
 
         if ($request->filled('search')) {
-            $searchTerm = $request->search;
-            $query->where(function($q) use ($searchTerm) {
-                $q->where('student_name', 'like', "%{$searchTerm}%")
-                ->orWhere('course', 'like', "%{$searchTerm}%")
-                ->orWhere('year_level', 'like', "%{$searchTerm}%")
-                ->orWhere('description', 'like', "%{$searchTerm}%");
-            });
+            $searchTerms = preg_split('/\s+/', trim($request->search), -1, PREG_SPLIT_NO_EMPTY);
+
+            foreach ($searchTerms as $term) {
+                $query->where(function($q) use ($term) {
+                    $q->where('student_name', 'like', "%{$term}%")
+                    ->orWhere('course', 'like', "%{$term}%")
+                    ->orWhere('year_level', 'like', "%{$term}%")
+                    ->orWhere('description', 'like', "%{$term}%");
+                });
+            }
         }
 
         $payments = $query->orderBy('deleted_at', 'desc')

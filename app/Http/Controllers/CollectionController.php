@@ -40,12 +40,15 @@ class CollectionController extends Controller
 
         // Search filter
         if ($request->filled('search')) {
-            $searchTerm = $request->search;
-            $query->where(function($q) use ($searchTerm) {
-                $q->where('student_name', 'like', "%{$searchTerm}%")
-                  ->orWhere('year_level', 'like', "%{$searchTerm}%")
-                  ->orWhere('description', 'like', "%{$searchTerm}%");
-            });
+            $searchTerms = preg_split('/\s+/', trim($request->search), -1, PREG_SPLIT_NO_EMPTY);
+
+            foreach ($searchTerms as $term) {
+                $query->where(function($q) use ($term) {
+                    $q->where('student_name', 'like', "%{$term}%")
+                      ->orWhere('year_level', 'like', "%{$term}%")
+                      ->orWhere('description', 'like', "%{$term}%");
+                });
+            }
         }
 
         // Filtered total (after year level filter)

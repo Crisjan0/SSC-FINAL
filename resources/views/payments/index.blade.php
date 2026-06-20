@@ -34,6 +34,7 @@
                     </div>
                     <input type="text" name="search" value="{{ request('search') }}" 
                         placeholder="Search records..." 
+                        autocomplete="off"
                         class="block w-full sm:w-64 pl-10 pr-12 py-2.5 border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50/50 transition-all">
                     
                     @if(request('search'))
